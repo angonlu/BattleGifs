@@ -11,13 +11,16 @@
  
 var database = firebase.database();
 var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-var missGif = 'https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif';
+var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
 var shipCount = 0;
 var hits = 0;
 var misses = 0;
+var player1 = "null";
+var player2 = "null";
+var playersRef = database.ref("players");
 console.log(shipCount)
   
-var player-one-array = [
+var playerOneArray = [
         [
             {col: 'a', hasShip: false, hit: "", miss: missGif},
             {col: 'b', hasShip: false},
@@ -44,7 +47,7 @@ var player-one-array = [
         ]
     ];
 
-    var player-two-array = [
+    var playerTwoArray = [
         [
             {col: 'a', hasShip: false, hit: "", miss: missGif},
             {col: 'b', hasShip: false},
@@ -70,13 +73,13 @@ var player-one-array = [
             {col: 'c', hasShip: false}
         ]
     ];
-database.ref().push(player-one-array);
-database.ref().push(player-two-array);
+database.ref().set(playerOneArray);
+database.ref().set(playerTwoArray);
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
 newSnap.val();
-var player-one-array = newSnap.val();
+var playerOneArray = newSnap.val();
 
 renderBoard();
 renderOppBoard();
@@ -87,12 +90,12 @@ function renderBoard(){
 
 var board="<table border=2>";
 
-for (var y=0; y<player-one-array.length; y++ ) {        // for each row
+for (var y=0; y<playerOneArray.length; y++ ) {        // for each row
     board += "<tr>";
-    for (var x=0; x<player-one-array[y].length; x++ ) { // for each clm
+    for (var x=0; x<playerOneArray[y].length; x++ ) { // for each clm
         var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-        if(player-one-array[y][x].hasShip) {
-          waterGif = player-one-array[y][x].hasShip;
+        if(playerOneArray[y][x].hasShip) {
+          waterGif = playerOneArray[y][x].hasShip;
         }
             board += "<td "+ "class='tile'" +
             " data-row='"+ y + "'"+
@@ -110,12 +113,13 @@ $("#player-one-board").html(board);
 function renderOppBoard(){
     var board="<table border=2>";
 
-for (var y=0; y<player-two-array.length; y++ ) {        // for each row
+for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
     board += "<tr>";
-    for (var x=0; x<player-two-array[y].length; x++ ) { // for each clm
+    for (var x=0; x<playerTwoArray[y].length; x++ ) { // for each clm
         var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-        if(arrayObjects[y][x].hasShip) {
-          waterGif = player-two-array[y][x].hasShip;
+        if(playerTwoArray[y][x].hasShip) {
+          waterGif = playerTwoArray
+       [y][x].hasShip;
         }
             board += "<td "+ "class='tile'" +
             " data-row='"+ y + "'"+
@@ -134,7 +138,9 @@ $("#opponent-board").html(board);
 
 function startGame (){
         alert("Get ready for battle!");
-        shipCount = null;
+        // shipCount = -99;
+        getInGame();
+
 
 }
     // $(document).ready(function() {
@@ -147,20 +153,48 @@ function startGame (){
             // console.log(row);
             var col = $(this).attr("data-col");
             // console.log(col);
-            var ship = "https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif";
+            var ship = "https://media.giphy.com/media/rbMT3rRP5vybm/giphy.gif";
             shipCount++;
             if (shipCount === 2){
                 startGame();
+                // shipCount = nAn
+
             }
             // Changes the value of that specific part of the array
-            player-one-array[row][col].hasShip=ship;
-            arrayObjects
+            playerOneArray[row][col].hasShip=ship;
+            // arrayObjects
             // sends changes to firebase.
-            database.ref().set(arrayObjects);
+            database.ref().set(playerOneArray);
+            // database.ref().set(playerTwoArray);
 
             
 
 })
+function getInGame() {
+    //commenting out for when we need to implement chat        
+    // var chatData = database.ref("/chat/" + Date.now());
+
+    if (currentPlayers < 2) {
+
+        if(playerOneExists) {
+
+            playerNum = 2;
+        }
+        else{
+            playerNum = 1;
+        }
+    //Creates key based on player number
+    playerRef = database.ref("/players/" + playerNum);
+
+    //Creates player object
+    playerRef.set({
+        name: username,
+        wins: 0,
+        loss: 0
+    });
+
+    } 
+}
 // });
 
 
@@ -175,6 +209,7 @@ function startGame (){
 // //    arrayObjects[0][0].hasShip = "https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif";
 // REPLACE WITH [X]AND[Y]
 
+// boat gif https://media.giphy.com/media/rbMT3rRP5vybm/giphy.gif
 // Boat gif image https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif
 // waterGif gif https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif
 
