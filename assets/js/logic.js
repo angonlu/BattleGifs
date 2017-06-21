@@ -79,14 +79,45 @@ var playerOneArray = [
             {col: 'c', hasShip: false}
         ]
     ];
-database.ref().set("")    
-database.ref().push(playerOneArray);
-database.ref().push(playerTwoArray);
+database.ref().set(""); //need a "NewGame" button that will allow anyone to reset the game. 
+// ^^^ this causes firebase to refresh everytime the player refreshes or opens new page. Need to make it so that it renders the updated board.  
+// database.ref().push(playerOneArray);
+// database.ref().push(playerTwoArray);
 
-database.ref().set({
-	playerOne: playerOneArray,
-	playerTwo: playerTwoArray
+
+$(document).on("click", ".joinBtn", function(event){
+	event.preventDefault();
+	database.ref().once("value", function(snapshot){
+		playerCounter = snapshot.numChildren();
+		console.log(snapshot.numChildren());
 })
+
+if(playerCounter === 0){
+	database.ref("playerOne").set(playerOneArray);
+	window.sessionStorage.setItem("player", "playerOne");
+	//set your storage local to playerOne
+	// if your localstorage is playerOne hide join
+}
+
+if(playerCounter === 1){
+	database.ref("playerTwo").set(playerTwoArray);
+	window.sessionStorage.setItem("player", "playerTwo");
+	//set your local storage playerTwo
+}
+
+if (playerCounter === 2) {
+	window.alert("Cannot Join")
+}
+
+})
+
+
+
+
+// database.ref().set({
+// 	playerOne: playerOneArray,
+// 	playerTwo: playerTwoArray
+// })
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
@@ -151,10 +182,6 @@ $("#opponent-board").html(board);
 
 function setBoard1 (){
         // shipCount = -99;
-    
-
-
-
 }
 // $(document).ready(function() {
         $(document).on("click", ".p-1", function(event) {
@@ -191,9 +218,7 @@ function setBoard1 (){
 })
 
 function setBoard2 (){
-        // shipCount = -99;
-      
-   
+        // shipCount = -99;  
 }
 // $(document).ready(function() {
         $(document).on("click", ".p-2", function(event) {
@@ -222,12 +247,19 @@ function setBoard2 (){
             // arrayObjects
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
+
          
             
          
 
            
 })
+
+// function playGame() {
+// 	$(".p-1").click(function){
+// 		toggle()
+
+// }        
 
 // //Distinguishing Player 1 and Player 2 //--------------------------------------
 // //onclick the join button increment player count
