@@ -84,7 +84,6 @@ database.ref().set(""); //need a "NewGame" button that will allow anyone to rese
 // database.ref().push(playerOneArray);
 // database.ref().push(playerTwoArray);
 
-
 $(document).on("click", ".joinBtn", function(event){
 	event.preventDefault();
 	database.ref().once("value", function(snapshot){
@@ -94,25 +93,28 @@ $(document).on("click", ".joinBtn", function(event){
 
 if(playerCounter === 0){
 	database.ref("playerOne").set(playerOneArray);
-	window.sessionStorage.setItem("player", "playerOne");
-	//set your storage local to playerOne
-	// if your localstorage is playerOne hide join
+	sessionStorage.setItem("player", "playerOne");
+	// When player joins, hides join button to prevent from user using the same machine to hit the join button again. 
+	if (sessionStorage.getItem("player") === "playerOne"){
+		$(".joinBtn").hide();
+		
+	}
 }
 
 if(playerCounter === 1){
 	database.ref("playerTwo").set(playerTwoArray);
-	window.sessionStorage.setItem("player", "playerTwo");
-	//set your local storage playerTwo
+	sessionStorage.setItem("player", "playerTwo");
+	if (sessionStorage.getItem("player") === "playerTwo"){
+		$(".joinBtn").hide();
+	}
+	
 }
 
 if (playerCounter === 2) {
-	window.alert("Cannot Join")
+	alert("Cannot Join")
 }
 
 })
-
-
-
 
 // database.ref().set({
 // 	playerOne: playerOneArray,
@@ -179,9 +181,8 @@ $("#opponent-board").html(board);
 
 }
 
-
 function setBoard1 (){
-        // shipCount = -99;
+        
 }
 // $(document).ready(function() {
         $(document).on("click", ".p-1", function(event) {
@@ -204,21 +205,15 @@ function setBoard1 (){
             }
             // Changes the value of that specific part of the array
             playerOneArray[row][col].hasShip=ship;
-           
-            // x
-            // arrayObjects
+  
             // sends changes to firebase.
             database.ref('playerOne').set(playerOneArray);
-           
-     
-         
-
-            
+ 
 
 })
 
 function setBoard2 (){
-        // shipCount = -99;  
+        
 }
 // $(document).ready(function() {
         $(document).on("click", ".p-2", function(event) {
@@ -242,17 +237,11 @@ function setBoard2 (){
             }
             // Changes the value of that specific part of the array
             playerTwoArray[row][col].hasShip=ship;
-           
-            // x
-            // arrayObjects
+
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
 
-         
-            
-         
-
-           
+     
 })
 
 // function playGame() {
