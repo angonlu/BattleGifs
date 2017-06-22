@@ -10,14 +10,16 @@
   firebase.initializeApp(config);
  
 var database = firebase.database();
-var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-var shipCount = 0;
+var waterGif = 'https://media4.giphy.com/media/3oKIPaGG4PDQgQDFZe/giphy.gif';
+var missGif = 'https://media1.giphy.com/media/KUcie8kMYmuek/giphy.gif';
+var hitGif = 'https://media4.giphy.com/media/d4aVHC1HKnButuXC/giphy.gif';
+
 var hits = 0;
 var misses = 0;
 var player1 = "null";
 var player2 = "null";
 var playersRef = database.ref("players");
+var shipCount = 0;
 console.log(shipCount)
   
 var playerOneArray = [
@@ -73,8 +75,13 @@ var playerOneArray = [
             {col: 'c', hasShip: false}
         ]
     ];
-database.ref().set(playerOneArray);
-database.ref().set(playerTwoArray);
+// database.ref().set("");
+// database.ref().push(playerOneArray);
+// database.ref().push(playerTwoArray);
+database.ref().set({
+    playerOne: playerOneArray,
+    playTwo: playerTwoArray
+})
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
@@ -93,11 +100,11 @@ var board="<table border=2>";
 for (var y=0; y<playerOneArray.length; y++ ) {        // for each row
     board += "<tr>";
     for (var x=0; x<playerOneArray[y].length; x++ ) { // for each clm
-        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+        var waterGif = 'https://media1.giphy.com/media/KUcie8kMYmuek/giphy.gif';
         if(playerOneArray[y][x].hasShip) {
           waterGif = playerOneArray[y][x].hasShip;
         }
-            board += "<td "+ "class='tile'" +
+            board += "<td "+ "class='p-one'" +
             " data-row='"+ y + "'"+
             " data-col='"+ x + "'>" +
                " <img src='" +
@@ -116,12 +123,12 @@ function renderOppBoard(){
 for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
     board += "<tr>";
     for (var x=0; x<playerTwoArray[y].length; x++ ) { // for each clm
-        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+        var waterGif = 'https://media1.giphy.com/media/KUcie8kMYmuek/giphy.gif';
         if(playerTwoArray[y][x].hasShip) {
           waterGif = playerTwoArray
        [y][x].hasShip;
         }
-            board += "<td "+ "class='tile'" +
+            board += "<td "+ "class='p-two'" +
             " data-row='"+ y + "'"+
             " data-col='"+ x + "'>" +
                " <img src='" +
@@ -137,18 +144,16 @@ $("#opponent-board").html(board);
 
 
 function startGame (){
-        alert("Get ready for battle!");
-        // shipCount = -99;
-        getInGame();
+    $("#comments").html("Get Ready For Battle!")
+        // getInGame();
 
 
 }
     // $(document).ready(function() {
-        $(document).on("click", "td", function(event) {
+        $(document).on("click", ".p-one", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
         // On Click, captures the coordinates of the tile clicked.
-        
             var row = $(this).attr("data-row");
             // console.log(row);
             var col = $(this).attr("data-col");
@@ -157,14 +162,16 @@ function startGame (){
             shipCount++;
             if (shipCount === 2){
                 startGame();
-                // shipCount = nAn
-
             }
             // Changes the value of that specific part of the array
             playerOneArray[row][col].hasShip=ship;
             // arrayObjects
             // sends changes to firebase.
-            database.ref().set(playerOneArray);
+
+            database.ref('playerOne').set(playerOneArray);
+            // database.ref().set("")
+            // database.ref().push(playerOneArray);
+
             // database.ref().set(playerTwoArray);
 
             
