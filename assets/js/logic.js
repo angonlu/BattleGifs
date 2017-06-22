@@ -65,7 +65,11 @@ var playerOneArrayDefault = [
     ];
 
     var playerTwoArrayDefault = [
+<<<<<<< HEAD
         [
+=======
+		[
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
             {col: 'a', hasShip: false,  hit: "", miss: true},
             {col: 'b', hasShip: false,  hit: "", miss: true},
             {col: 'c', hasShip: false,  hit: "", miss: true},
@@ -96,6 +100,7 @@ database.ref().set(""); //need a "NewGame" button that will allow anyone to rese
 // database.ref().push(playerTwoArray);
 
 $(document).on("click", ".joinBtn", function(event){
+<<<<<<< HEAD
     event.preventDefault();
     database.ref().once("value", function(snapshot){
         playerCounter = snapshot.numChildren();
@@ -123,26 +128,66 @@ if(playerCounter === 1){
 if (playerCounter === 2) {
     sessionStorage.setItem("player", "");
     alert("Cannot Join")
+=======
+	event.preventDefault();
+	database.ref().once("value", function(snapshot){
+		playerCounter = snapshot.numChildren();
+		console.log(snapshot.numChildren());
+		
+})
+
+if(playerCounter === 0){
+	database.ref("playerOne").set(playerOneArrayDefault);
+	sessionStorage.setItem("player", "playerOne");
+	// When player joins, hides join button to prevent from user using the same machine to hit the join button again. 
+	if (sessionStorage.getItem("player") === "playerOne"){
+		$(".joinBtn").hide();	
+	}
+}
+
+if(playerCounter === 1){
+	database.ref("playerTwo").set(playerTwoArrayDefault);
+	sessionStorage.setItem("player", "playerTwo");
+	if (sessionStorage.getItem("player") === "playerTwo"){
+		$(".joinBtn").hide();
+	}	
+}
+
+if (playerCounter === 2) {
+	sessionStorage.setItem("player", "");
+	alert("Cannot Join")
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 }
 
 })
 
 // database.ref().set({
+<<<<<<< HEAD
 //  playerOne: playerOneArray,
 //  playerTwo: playerTwoArray
+=======
+// 	playerOne: playerOneArray,
+// 	playerTwo: playerTwoArray
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 // })
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
 newSnap.val();
 
+<<<<<<< HEAD
   playerOneArrayDefault = newSnap.val().playerOne;
   playerTwoArrayDefault = newSnap.val().playerTwo;
+=======
+  playerOneArray = newSnap.val().playerOne;
+  playerTwoArray = newSnap.val().playerTwo;
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 // search playerOneArray to see if they placed 2 ships
 var numP1Ships = 0;
 var numP2Ships = 0;
+<<<<<<< HEAD
 for(var i = 0; i < playerOneArray.length; i++) {
     for(var j = 0; j < playerOneArray[i].length; j++) {
         if(playerOneArray[i][j].hasShip) {
@@ -156,6 +201,21 @@ if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
 
 
     
+=======
+for(var i =0; i < playerOneArray.length; i++) {
+	for(var j = 0; j <playerOneArray[i].length; j++) {
+		if(playerOneArray[i][j].hasShip) {
+			numP1Ships++;
+		}
+	}
+}
+if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
+	isPlaying = true;
+	playGame();
+
+
+	
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 }
 
 
@@ -165,7 +225,11 @@ renderOppBoard();
 
 database.ref('currentPlayer').on("value", function(newSnap){
 console.log(newSnap.val())
+<<<<<<< HEAD
 })  
+=======
+})	
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 // Renders board onto page, each tile with a waterGif image.
 function renderBoard(){
@@ -247,6 +311,14 @@ $("#opponent-board").html(board);
                 database.ref('playerOne').set(playerOneArray);
         
             }
+
+            if (sessionStorage.getItem("player") === "playerOne"){
+			   playerOneArray[row][col].hasShip=ship;
+  
+            	// sends changes to firebase.
+            	database.ref('playerOne').set(playerOneArray);
+		
+			}
             // Changes the value of that specific part of the array
          
  
@@ -276,20 +348,31 @@ $("#opponent-board").html(board);
             else if ( shipCount2 > 2){
                 return;
             }
+<<<<<<< HEAD
             if (sessionStorage.getItem("player") === "playerTwo"){
             
             playerTwoArray[row][col].hasShip=ship;
+=======
+ 			if (sessionStorage.getItem("player") === "playerTwo"){
+			
+			playerTwoArray[row][col].hasShip=ship;
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
 
+<<<<<<< HEAD
             }   
+=======
+			}	
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
             // Changes the value of that specific part of the array
             
      
 })
 
 function playGame() {
+<<<<<<< HEAD
     $('body').removeClass('newGame');
 
     $(document).on("click", ".p-2",  function(event) {
@@ -299,12 +382,24 @@ function playGame() {
         $(this).attr("data-hit", "hit");
 
         var row = $(this).attr("data-row");
+=======
+	$('body').removeClass('newGame');
+
+	$(document).on("click", ".p-2",  function(event) {
+		event.preventDefault();
+		console.log("attack");
+
+		$(this).attr("data-hit", "hit");
+
+		var row = $(this).attr("data-row");
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
         
         var col = $(this).attr("data-col");
          
         var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
 
         if (sessionStorage.getItem("player") === "playerOne"){
+<<<<<<< HEAD
             
             if(playerTwoArray[row][col].hasShip) {
 
@@ -316,6 +411,19 @@ function playGame() {
 
             }
     })
+=======
+			
+			if(playerTwoArray[row][col].hasShip) {
+
+				playerTwoArray[row][col].hasShip=hit;	
+			}
+
+            // sends changes to firebase.
+            database.ref('playerTwo').set(playerTwoArray);
+
+			}
+	})
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 }
 
 // players have now placed their ships. This function is the game logic and allows for players to switch off and take turns to select squares
@@ -327,7 +435,11 @@ function playGame() {
 
 
 // Player 1 interacts with Player 2 board. Player 2 interacts with Player 1 board. 
+<<<<<<< HEAD
 $(document).on("click",     )
+=======
+$(document).on("click", 	)
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 // If Player 1 selects a square that has a ship, mark as hit - update to html to reflect hit.
 // If Player 1 selects a square that does not have a ship, mark as missed - update on html to reflect miss.
@@ -335,14 +447,24 @@ $(document).on("click",     )
 // Be able to track who's turn it is. Store player "turns" in firebase. Every a player selects a square, update firebase each time I update the variable, then render updated board. Need to be notified and moves need to work.  
 // If all ships are selected, alert player 1 wins.
 
+<<<<<<< HEAD
 // Allow reset game via a "newGame" button that will reset firebase changes //database.ref().set(""); 
+=======
+// Allow reset game via a "newGame"	button that will reset firebase changes //database.ref().set(""); 
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 // }
 
 // if (shipHits === 2) {
+<<<<<<< HEAD
 //  winGame();
 //  alert("You Win!");
 // }    
+=======
+// 	winGame();
+// 	alert("You Win!");
+// } 	
+>>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
 // boat gif https://media.giphy.com/media/rbMT3rRP5vybm/giphy.gif
 // Boat gif image https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif
