@@ -108,6 +108,10 @@ if(playerCounter === 1){
 	sessionStorage.setItem("player", "playerTwo");
 	if (sessionStorage.getItem("player") === "playerTwo"){
 		$(".joinBtn").hide();
+
+		hide(playerOneArray[i][j].hasShip);
+		//something.hide()from player 2 screen
+
 	}	
 }
 
@@ -126,7 +130,10 @@ if (playerCounter === 2) {
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
-newSnap.val();
+
+if(newSnap.val() === ""){
+	return;
+}
 
   playerOneArray = newSnap.val().playerOne;
   playerTwoArray = newSnap.val().playerTwo;
@@ -134,19 +141,26 @@ newSnap.val();
 // search playerOneArray to see if they placed 2 ships
 var numP1Ships = 0;
 var numP2Ships = 0;
+
 for(var i =0; i < playerOneArray.length; i++) {
-	for(var j = 0; j <playerOneArray[i].length; j++) {
+	for(var j = 0; j < playerOneArray[i].length; j++) {
 		if(playerOneArray[i][j].hasShip) {
 			numP1Ships++;
 		}
 	}
 }
+
+// for (var i = 0; i < playerTwoArray.length; i++) {
+// 	for(var j = 0; j < playerTwoArray[i].length; j++) {
+// 		if(playerTwoArray[i][j].hasShip) {
+// 			numP2Ships++;
+// 		}
+// 	}
+// }
 if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
 	isPlaying = true;
+
 	playGame();
-
-
-	
 }
 
 
@@ -184,6 +198,12 @@ $("#player-one-board").html(board);
 }
 
 function renderOppBoard(){
+
+//Error occuring in console.log since playerTwoArray = newSnap.val().playerTwo; was not defined UNTIL player2 joins game. This code removes that error until player2 has joined.
+	if (typeof playerTwoArray === "undefined") {
+		return;
+	}
+
     var board="<table border=2>";
 
 for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
