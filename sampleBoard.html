@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Local CSS -->
     <!-- <link rel="stylesheet" type="text/css" href="assets/style/reset.css"> -->
-    <link rel="stylesheet" type="text/css" href="assets/style/style.css">
+   <!--  <link rel="stylesheet" type="text/css" href="assets/style/style.css"> -->
 
 <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
@@ -17,7 +17,7 @@
         body {
             font-size: 18px;
             font-family: "Arial Rounded MT Bold";
-            background-image: url(https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2016/02/worldofwarships-1024x576.jpg);
+            background-image: url(http://oceanexplorer.noaa.gov/facts/pacific-size.jpg);
             background-size: cover;
             text-align: center;
         }
@@ -39,15 +39,15 @@
             /*float: left;*/
             width: 40%;
             font-size: 2em;
-            border: .5px dotted #ccc;
+            border: 1px solid #ccc;
             /*background: #fff;*/
             background: transparent;
             margin: 0 auto;
         }
         td {
-            border: .5px solid #eee;
-            /*width: 120px;*/
-            /*height: 120px;*/
+            border: 1px solid #eee;
+            width: 120px;
+            height: 120px;
             text-align: center;
             background-color: transparent;
         }
@@ -55,48 +55,37 @@
             max-height: 100px;
             background-color: transparent;
         }
-        .p-two{
-            filter:blur(3px);
-        }
-        header {
-            background-color: rgba(66, 134, 244, .2)
-        }
         h1{
             margin: 0 auto;
             font-size: 75px;
         }
         p {
             font-size: 30px;
-            color: white;
         }
         /*#opponent-board {
             float: right;
         }*/
-        .btn{
-            display: block;
-            margin: 0 auto
-        }
     </style>
 </head>
-<body>
+<body class="newGame">
 <header>
 <h1>
     Battleship
 </h1>
-
-<button type="button" class="btn btn-default">Join</button>
-<span id="comments">hello</span>
-
+<button type="button" class="joinBtn">Join</button>
+<!-- <div class="newGame"> -->
+<button type="button" class="newGame">New Game</button>
+<!-- </div> -->
 </header>
 <div class="container col-lg-6">
-<p>Player One</p>
+<p>Player1</p>
 <div id="player-one-board">
-</div>
-</div>
 
 
+</div>
+</div>
 <div class="container col-lg-6">
-<p>Player Two</p>
+<p>Player2</p>
 <div id="opponent-board">
 
 </div>
