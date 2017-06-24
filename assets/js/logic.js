@@ -163,7 +163,6 @@ database.ref().on("value", function(newSnap){
 	}
 
 	if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
-		alert("Player1's Turn!")
 		playGame();	
 	}
 
@@ -269,14 +268,14 @@ $("#opponent-board").html(board);
 
 }
 
-function myBoard(){
-	if(player1){
-		return playeroneboard
-	}
-	else{
-		return player2board
-	}
-}
+// function myBoard(){
+// 	if(player1){
+// 		return playeroneboard
+// 	}
+// 	else{
+// 		return player2board
+// 	}
+// }
 
 // function enemyBoard(){
 // 	if(i am player one){
