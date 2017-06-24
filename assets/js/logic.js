@@ -10,7 +10,7 @@
   firebase.initializeApp(config);
  
 var database = firebase.database();
-var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
 // var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
 var shipCount1 = 0;
 var shipCount2 =0;
@@ -90,8 +90,7 @@ $(document).on("click", ".joinBtn", function(event){
 	event.preventDefault();
 	database.ref().once("value", function(snapshot){
 		playerCounter = snapshot.numChildren();
-		console.log(snapshot.numChildren());
-		isPlaying = true;	
+		console.log(snapshot.numChildren());	
 	})
 
 if(playerCounter === 0){
@@ -109,8 +108,7 @@ if(playerCounter === 1){
 	if (sessionStorage.getItem("player") === "playerTwo"){
 		$(".joinBtn").hide();
 	}	
-		// hide(playerOneArray[i][j].hasShip);
-		//something.hide()from player 2 screen		
+			
 }
 
 if (playerCounter === 2) {
@@ -141,8 +139,8 @@ database.ref().on("value", function(newSnap){
 		}
 	}
 
-	playerOneArray = newSnap.val().playerOne;
-	playerTwoArray = newSnap.val().playerTwo;
+	playerOneArray = newSnap.val().playerOne || [];
+	playerTwoArray = newSnap.val().playerTwo || [];
 
 	// search playerOneArray to see if they placed 2 ships
 	var numP1Ships = 0;
@@ -156,27 +154,58 @@ database.ref().on("value", function(newSnap){
 		}
 	}
 
-	// for (var i = 0; i < playerTwoArray.length; i++) {
-	// 	for(var j = 0; j < playerTwoArray[i].length; j++) {
-	// 		if(playerTwoArray[i][j].hasShip) {
-	// 			numP2Ships++;
-	// 		}
-	// 	}
-	// }
-
-	if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
-		isPlaying = true;	
+	for (var i = 0; i < playerTwoArray.length; i++) {
+		for(var j = 0; j < playerTwoArray[i].length; j++) {
+			if(playerTwoArray[i][j].hasShip) {
+				numP2Ships++;
+			}
+		}
 	}
 
-		setPlayerOneBoard();
-		setPlayerTwoBoard();	
-		playGame();
+	if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
+		alert("Player1's Turn!")
+		playGame();	
+	}
+
+	if(sessionStorage.getItem("player") === "playerOne") {
+		setPlayerOneBoard();	
+	} else {
+		setPlayerTwoBoard();
+	}
 
 })
 
 // database.ref('currentPlayer').on("value", function(newSnap){
 // 	console.log(newSnap.val())
 // })	
+
+function renderOtherBoard(player, playerClass, playerArray){
+
+	var board="<table border=2>";
+
+	// needs to be dynamic what board to use
+	for (var y=0; y<playerArray.length; y++ ) {        // for each row
+	    board += "<tr>";
+	    for (var x=0; x<playerArray[y].length; x++ ) { // for each clm
+	        var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
+	        if(playerArray[y][x].hit != "") {
+	          waterGif = playerArray[y][x].hit;
+	        }
+	        if (playerArray[y][x].miss) {
+	        	waterGif = playerArray[y][x].missGif
+	        }
+	            board += "<td "+ "class=" + player + 
+	            " data-row='"+ y + "'"+
+	            " data-col='"+ x + "'>" +
+	               " <img src='" +
+	               waterGif +
+	               "' /></td>";
+	    }
+	    board += "</tr>";
+	}
+	board += "</table>";
+	$(playerClass).html(board);
+}
 
 // Renders board onto page, each tile with a waterGif image.
 function setPlayerOneBoard(){
@@ -187,7 +216,7 @@ function setPlayerOneBoard(){
 	for (var y=0; y<playerOneArray.length; y++ ) {        // for each row
 	    board += "<tr>";
 	    for (var x=0; x<playerOneArray[y].length; x++ ) { // for each clm
-	        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+	        var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
 	        if(playerOneArray[y][x].hasShip) {
 	          waterGif = playerOneArray[y][x].hasShip;
 	        }
@@ -206,9 +235,7 @@ function setPlayerOneBoard(){
 	board += "</table>";
 	$("#player-one-board").html(board);
 }
-
-
-
+	
 function setPlayerTwoBoard(){
 
 //Error occuring in console.log since playerTwoArray = newSnap.val().playerTwo; was not defined UNTIL player2 joins game. This code removes that error until player2 has joined.
@@ -221,7 +248,7 @@ function setPlayerTwoBoard(){
 for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
     board += "<tr>";
     for (var x=0; x<playerTwoArray[y].length; x++ ) { // for each clm
-        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+        var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
         if(playerTwoArray[y][x].hasShip) {
           waterGif = playerTwoArray[y][x].hasShip;
         }
@@ -242,14 +269,14 @@ $("#opponent-board").html(board);
 
 }
 
-// function myBoard(){
-// 	if(player1){
-// 		return playeroneboard
-// 	}
-// 	else{
-// 		return player2board
-// 	}
-// }
+function myBoard(){
+	if(player1){
+		return playeroneboard
+	}
+	else{
+		return player2board
+	}
+}
 
 // function enemyBoard(){
 // 	if(i am player one){
@@ -263,8 +290,8 @@ $("#opponent-board").html(board);
 // function setBoard1 (){
         
 // }
-// $(document).ready(function() {
 
+//Setting ships on player 1's board
 $('body.newGame').on("click", ".p-1", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
@@ -294,10 +321,7 @@ $('body.newGame').on("click", ".p-1", function(event) {
             // Changes the value of that specific part of the array
 })
 
-// function setBoard2 (){
-        
-// }
-// $(document).ready(function() {
+//Setting ships on player2's board
         $('body.newGame').on("click", ".p-2", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
@@ -330,7 +354,16 @@ $('body.newGame').on("click", ".p-1", function(event) {
      
 })
 
+//render opponents board - initialize a board with just water gifs. Only show hit's or misses
+
 function playGame() {
+	if (sessionStorage.getItem("player") === "playerOne"){
+		renderOtherBoard("p-2", "#opponent-board", playerTwoArray)
+		event.preventDefault();
+	} else {
+		renderOtherBoard("p-1", "#player-one-board", playerOneArray)
+		event.preventDefault();
+	}
 	$('body').removeClass('newGame');
 
 	//attack if there is a ship on space for player 1
@@ -349,8 +382,7 @@ function playGame() {
         if (sessionStorage.getItem("player") === "playerOne"){
 			
 			if(playerTwoArray[row][col].hasShip) {
-
-				playerTwoArray[row][col].hasShip = hit;	
+				playerTwoArray[row][col].hit = hit;	
 			}
 			else {
 				 playerTwoArray[row][col].missGif = miss;
@@ -359,9 +391,10 @@ function playGame() {
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
-            setPlayerTwoBoard();
+            
+            renderOtherBoard("p-2", "#opponent-board", playerTwoArray)
 
-			}
+		}
 	})
 
 	//attack if there is a ship on space for player 2
@@ -382,51 +415,16 @@ function playGame() {
 
 			if(playerOneArray[row][col].hasShip) {
 
-				playerOneArray[row][col].hasShip = hit
+				playerOneArray[row][col].hit = hit
 
 			} else {
 				playerOneArray[row][col].missGif = miss;
 				playerOneArray[row][col].miss = true;
 			}
+			renderOtherBoard("p-1", "#player-one-board", playerOneArray)
 		}
 		database.ref('playerOne').set(playerOneArray);
-		setPlayerOneBoard()
 	})
-
-	//if player does not hit a ship, then the html updates to a "miss"
-	// $(document).on("click", ".p-1", function(event){
-	// 	event.preventDefault();
-
-	// 	$(this).attr("data-miss", "miss");
-
-	// 	var row = $(this).attr("data-row");
-
-	// 	var col = $(this).attr("data-col");
-
-
-
-	// 	var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
-
-	// 	console.log(playerOneArray[row][col].miss, "what")
-	// 	playerOneArray[row][col].clicked = true;
-
-	// 	if(sessionStorage.getItem("player") === "playerOne"){
-
-	// 		// start as false
-	// 		if(playerOneArray[row][col].miss) {
-
-	// 			console.log("getting here")
-
-	// 			playerOneArray[row][col].miss = miss
-
-	// 			database.ref('playerOne').set(playerOneArray);
-
-	// 			setPlayerOneBoard();
-
-	// 		}
-	// 	}
-
-	// })
 }
 
 
