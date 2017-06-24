@@ -14,12 +14,12 @@ var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
 // var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
 var shipCount1 = 0;
 var shipCount2 =0;
-var hits = 0;
+var hitCount = 0;
 var misses = 0;
 var currentPlayers = "null";
 var currentTurn = "null";
 var playerNum = null;
-var player2 = "null";
+// var player2 = "null";
 var playerCounter = 0;
 var isPlaying = false;
 // var playerOneExists = "null";
@@ -81,6 +81,7 @@ var playerOneArrayDefault = [
             {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ]
     ];
+
 database.ref().set(""); //need a "NewGame" button that will allow anyone to reset the game. 
 // ^^^ this causes firebase to refresh everytime the player refreshes or opens new page. Need to make it so that it renders the updated board.  
 // database.ref().push(playerOneArray);
@@ -116,6 +117,17 @@ if (playerCounter === 2) {
 	alert("Cannot Join")
 }
 
+
+// if(playerNum === null && isPlaying) {
+// 	if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
+// 		playerNum = 1;
+// 	}
+// 	else{
+// 		playerNum = 2;
+// 	}
+// }
+
+
 })
 
 // database.ref().set({
@@ -125,6 +137,11 @@ if (playerCounter === 2) {
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
+
+	//returns the array as empty until both players have joined and both boards have showed up on html otherwise an error message shows up in console.log making playerTwoArray undefined until player2 hits join.
+	playerOneArray = newSnap.val().playerOne || [];
+	playerTwoArray = newSnap.val().playerTwo || [];
+
 
 	if(newSnap.val() === ""){
 		return;
@@ -139,9 +156,6 @@ database.ref().on("value", function(newSnap){
 		}
 	}
 
-	playerOneArray = newSnap.val().playerOne || [];
-	playerTwoArray = newSnap.val().playerTwo || [];
-
 	// search playerOneArray to see if they placed 2 ships
 	var numP1Ships = 0;
 	var numP2Ships = 0;
@@ -153,7 +167,7 @@ database.ref().on("value", function(newSnap){
 			}
 		}
 	}
-
+	//search playerTwoArray to see if they placed 2 ships
 	for (var i = 0; i < playerTwoArray.length; i++) {
 		for(var j = 0; j < playerTwoArray[i].length; j++) {
 			if(playerTwoArray[i][j].hasShip) {
@@ -161,8 +175,9 @@ database.ref().on("value", function(newSnap){
 			}
 		}
 	}
-
+	//if both players have set ships run the playGame function
 	if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
+		isPlaying
 		playGame();	
 	}
 
@@ -170,14 +185,16 @@ database.ref().on("value", function(newSnap){
 		setPlayerOneBoard();	
 	} else {
 		setPlayerTwoBoard();
+		
 	}
 
 })
 
 // database.ref('currentPlayer').on("value", function(newSnap){
 // 	console.log(newSnap.val())
-// })	
+// })
 
+//render opponents board - initialize a board with just water gifs. Only show hit's or misses on other side of player's side. 
 function renderOtherBoard(player, playerClass, playerArray){
 
 	var board="<table border=2>";
@@ -234,7 +251,7 @@ function setPlayerOneBoard(){
 	board += "</table>";
 	$("#player-one-board").html(board);
 }
-	
+//renders playerTwo's board	
 function setPlayerTwoBoard(){
 
 //Error occuring in console.log since playerTwoArray = newSnap.val().playerTwo; was not defined UNTIL player2 joins game. This code removes that error until player2 has joined.
@@ -286,9 +303,6 @@ $("#opponent-board").html(board);
 // 	}
 // }
 
-// function setBoard1 (){
-        
-// }
 
 //Setting ships on player 1's board
 $('body.newGame').on("click", ".p-1", function(event) {
@@ -311,13 +325,14 @@ $('body.newGame').on("click", ".p-1", function(event) {
             }
 
             if (sessionStorage.getItem("player") === "playerOne"){
+            	// Changes the value of that specific part of the array
 			   playerOneArray[row][col].hasShip=ship;
   
             	// sends changes to firebase.
             	database.ref('playerOne').set(playerOneArray);
 		
 			}
-            // Changes the value of that specific part of the array
+            
 })
 
 //Setting ships on player2's board
@@ -334,35 +349,31 @@ $('body.newGame').on("click", ".p-1", function(event) {
             shipCount2++;      
 
             if (shipCount2 === 2){
-                // setBoard2();
                               
             }
             else if ( shipCount2 > 2){
             	return;
             }
  			if (sessionStorage.getItem("player") === "playerTwo"){
-			
+			 // Changes the value of that specific part of the array
 			playerTwoArray[row][col].hasShip=ship;
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
 
 			}	
-            // Changes the value of that specific part of the array
-            
-     
+              
 })
 
-//render opponents board - initialize a board with just water gifs. Only show hit's or misses
 
 function playGame() {
+
 	if (sessionStorage.getItem("player") === "playerOne"){
 		renderOtherBoard("p-2", "#opponent-board", playerTwoArray)
-		event.preventDefault();
 	} else {
 		renderOtherBoard("p-1", "#player-one-board", playerOneArray)
-		event.preventDefault();
 	}
+
 	$('body').removeClass('newGame');
 
 	//attack if there is a ship on space for player 1
@@ -386,6 +397,10 @@ function playGame() {
 			else {
 				 playerTwoArray[row][col].missGif = miss;
 				 playerTwoArray[row][col].miss = true;
+			}
+				
+			if(hit === 2){
+				alert("Enemy ships destroyed. You Win!");
 			}
 
             // sends changes to firebase.
@@ -420,41 +435,16 @@ function playGame() {
 				playerOneArray[row][col].missGif = miss;
 				playerOneArray[row][col].miss = true;
 			}
+		
+			if(hit === 2){
+				alert("Enemy ships destroyed. You Win!");
+			}
+
 			renderOtherBoard("p-1", "#player-one-board", playerOneArray)
 		}
 		database.ref('playerOne').set(playerOneArray);
+	
 	})
 }
 
 
-// var miss = https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif
-
-// players have now placed their ships. This function is the game logic and allows for players to switch off and take turns to select squares
-// Need to be able to distinguish which phase the game this is. 
-// if (both players have setShips), then run playGame();
-
-// If page refeshes at any time in the game, should be able to call on firebase and keep playing from wherever game left off. ******
-
-
-
-// Player 1 interacts with Player 2 board. Player 2 interacts with Player 1 board. 
-
-
-// If Player 1 selects a square that has a ship, mark as hit - update to html to reflect hit.
-// If Player 1 selects a square that does not have a ship, mark as missed - update on html to reflect miss.
-// After Player 1 has selected a square. Let Player 2 select a square.
-// Be able to track who's turn it is. Store player "turns" in firebase. Every a player selects a square, update firebase each time I update the variable, then render updated board. Need to be notified and moves need to work.  
-// If all ships are selected, alert player 1 wins.
-
-// Allow reset game via a "newGame"	button that will reset firebase changes //database.ref().set(""); 
-
-// }
-
-// if (shipHits === 2) {
-// 	winGame();
-// 	alert("You Win!");
-// } 	
-
-// boat gif https://media.giphy.com/media/rbMT3rRP5vybm/giphy.gif
-// Boat gif image https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif
-// waterGif gif https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif
