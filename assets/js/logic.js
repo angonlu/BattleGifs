@@ -30,55 +30,55 @@ var playerTwoArray = [];
   
 var playerOneArrayDefault = [
         [
-            {col: 'a', hasShip: false,  hit: "", miss: true},
-            {col: 'b', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true} 
+            {col: 'a', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""} 
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
     ];
 
     var playerTwoArrayDefault = [
 		[
-            {col: 'a', hasShip: false,  hit: "", miss: true},
-            {col: 'b', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true}, 
+            {col: 'a', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""}, 
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ]
     ];
 database.ref().set(""); //need a "NewGame" button that will allow anyone to reset the game. 
@@ -168,8 +168,8 @@ database.ref().on("value", function(newSnap){
 		isPlaying = true;	
 	}
 
-		renderBoard();
-		renderOppBoard();	
+		setPlayerOneBoard();
+		setPlayerTwoBoard();	
 		playGame();
 
 })
@@ -179,7 +179,7 @@ database.ref().on("value", function(newSnap){
 // })	
 
 // Renders board onto page, each tile with a waterGif image.
-function renderBoard(){
+function setPlayerOneBoard(){
 
 	var board="<table border=2>";
 
@@ -190,6 +190,9 @@ function renderBoard(){
 	        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
 	        if(playerOneArray[y][x].hasShip) {
 	          waterGif = playerOneArray[y][x].hasShip;
+	        }
+	        if (playerOneArray[y][x].miss) {
+	        	waterGif = playerOneArray[y][x].missGif
 	        }
 	            board += "<td "+ "class='p-1'" + 
 	            " data-row='"+ y + "'"+
@@ -206,7 +209,7 @@ function renderBoard(){
 
 
 
-function renderOppBoard(){
+function setPlayerTwoBoard(){
 
 //Error occuring in console.log since playerTwoArray = newSnap.val().playerTwo; was not defined UNTIL player2 joins game. This code removes that error until player2 has joined.
 	if (typeof playerTwoArray === "undefined") {
@@ -220,9 +223,11 @@ for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
     for (var x=0; x<playerTwoArray[y].length; x++ ) { // for each clm
         var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
         if(playerTwoArray[y][x].hasShip) {
-          waterGif = playerTwoArray
-       [y][x].hasShip;
+          waterGif = playerTwoArray[y][x].hasShip;
         }
+        if (playerTwoArray[y][x].miss) {
+	        	waterGif = playerTwoArray[y][x].missGif
+	    }
             board += "<td "+ "class='p-2'" + 
             " data-row='"+ y + "'"+
             " data-col='"+ x + "'>" +
@@ -259,7 +264,8 @@ $("#opponent-board").html(board);
         
 // }
 // $(document).ready(function() {
-       $('body.newGame').on("click", ".p-1", function(event) {
+
+$('body.newGame').on("click", ".p-1", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
         // On Click, captures the coordinates of the tile clicked.
@@ -338,7 +344,7 @@ function playGame() {
         var col = $(this).attr("data-col");
          
         var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
-        // var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+        var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
 
         if (sessionStorage.getItem("player") === "playerOne"){
 			
@@ -346,12 +352,14 @@ function playGame() {
 
 				playerTwoArray[row][col].hasShip = hit;	
 			}
-			// else {
-			// 	 playerTwoArray[row][col].miss = miss;
-			// }
+			else {
+				 playerTwoArray[row][col].missGif = miss;
+				 playerTwoArray[row][col].miss = true;
+			}
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
+            setPlayerTwoBoard();
 
 			}
 	})
@@ -368,18 +376,24 @@ function playGame() {
 
 		var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
 
+		var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+
 		if (sessionStorage.getItem("player") === "playerTwo"){
 
 			if(playerOneArray[row][col].hasShip) {
 
 				playerOneArray[row][col].hasShip = hit
 
-				database.ref('playerOne').set(playerOneArray);
+			} else {
+				playerOneArray[row][col].missGif = miss;
+				playerOneArray[row][col].miss = true;
 			}
 		}
+		database.ref('playerOne').set(playerOneArray);
+		setPlayerOneBoard()
 	})
 
-	// //if player does not hit a ship, then the html updates to a "miss"
+	//if player does not hit a ship, then the html updates to a "miss"
 	// $(document).on("click", ".p-1", function(event){
 	// 	event.preventDefault();
 
@@ -389,15 +403,26 @@ function playGame() {
 
 	// 	var col = $(this).attr("data-col");
 
+
+
 	// 	var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+
+	// 	console.log(playerOneArray[row][col].miss, "what")
+	// 	playerOneArray[row][col].clicked = true;
 
 	// 	if(sessionStorage.getItem("player") === "playerOne"){
 
+	// 		// start as false
 	// 		if(playerOneArray[row][col].miss) {
+
+	// 			console.log("getting here")
 
 	// 			playerOneArray[row][col].miss = miss
 
 	// 			database.ref('playerOne').set(playerOneArray);
+
+	// 			setPlayerOneBoard();
+
 	// 		}
 	// 	}
 
