@@ -117,7 +117,6 @@ if (playerCounter === 2) {
 	alert("Cannot Join")
 }
 
-
 // if(playerNum === null && isPlaying) {
 // 	if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
 // 		playerNum = 1;
@@ -126,7 +125,6 @@ if (playerCounter === 2) {
 // 		playerNum = 2;
 // 	}
 // }
-
 
 })
 
@@ -147,14 +145,14 @@ database.ref().on("value", function(newSnap){
 		return;
 	}
 
-	if(playerNum === null && isPlaying) {
-		if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
-			playerNum = 1;
-		}
-		else{
-			playerNum = 2;
-		}
-	}
+	// if(playerNum === null && isPlaying) {
+	// 	if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
+	// 		playerNum = 1;
+	// 	}
+	// 	else{
+	// 		playerNum = 2;
+	// 	}
+	// }
 
 	// search playerOneArray to see if they placed 2 ships
 	var numP1Ships = 0;
@@ -181,6 +179,7 @@ database.ref().on("value", function(newSnap){
 		playGame();	
 	}
 
+	//won't show the other board until both players have joined. 
 	if(sessionStorage.getItem("player") === "playerOne") {
 		setPlayerOneBoard();	
 	} else {
@@ -303,11 +302,11 @@ $("#opponent-board").html(board);
 // 	}
 // }
 
-
 //Setting ships on player 1's board
 $('body.newGame').on("click", ".p-1", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
+            console.log(this);
         // On Click, captures the coordinates of the tile clicked.
         
             var row = $(this).attr("data-row");
@@ -365,7 +364,6 @@ $('body.newGame').on("click", ".p-1", function(event) {
               
 })
 
-
 function playGame() {
 
 	if (sessionStorage.getItem("player") === "playerOne"){
@@ -386,21 +384,29 @@ function playGame() {
         
         var col = $(this).attr("data-col");
          
-        var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
+        var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif";
+
         var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+        console.log("hi", $(this).attr("data-ship"));
+        // hitCount++ 
+
+        if($(this).attr("data-ship") === "ship"){
+        	hitCount++;
+        } 
 
         if (sessionStorage.getItem("player") === "playerOne"){
 			
 			if(playerTwoArray[row][col].hasShip) {
-				playerTwoArray[row][col].hit = hit;	
+				playerTwoArray[row][col].hit = hit;
+
 			}
 			else {
 				 playerTwoArray[row][col].missGif = miss;
 				 playerTwoArray[row][col].miss = true;
 			}
 				
-			if(hit === 2){
-				alert("Enemy ships destroyed. You Win!");
+			if(sessionStorage.getItem("player") === "playerOne" && hitCount === 2){
+				// alert("Enemy ships destroyed. You Win!");
 			}
 
             // sends changes to firebase.
@@ -430,15 +436,17 @@ function playGame() {
 			if(playerOneArray[row][col].hasShip) {
 
 				playerOneArray[row][col].hit = hit
+				
 
 			} else {
 				playerOneArray[row][col].missGif = miss;
 				playerOneArray[row][col].miss = true;
+				
 			}
 		
-			if(hit === 2){
-				alert("Enemy ships destroyed. You Win!");
-			}
+			// if(hitCount === 2){
+			// 	alert("Enemy ships destroyed. You Win!");
+			// }
 
 			renderOtherBoard("p-1", "#player-one-board", playerOneArray)
 		}
@@ -446,5 +454,6 @@ function playGame() {
 	
 	})
 }
+
 
 
