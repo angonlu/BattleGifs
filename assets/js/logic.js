@@ -1,34 +1,26 @@
-// Initialize Firebase
-  // var config = {
-  //   apiKey: "AIzaSyC5JhJbodE2o9gJ7Rhql9R4mWpRS_7bEPg",
-  //   authDomain: "cazzle-e4640.firebaseapp.com",
-  //   databaseURL: "https://cazzle-e4640.firebaseio.com",
-  //   projectId: "cazzle-e4640",
-  //   storageBucket: "cazzle-e4640.appspot.com",
-  //   messagingSenderId: "284034470468"
-  // };
-  // firebase.initializeApp(config);
+
+ // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyAIk5zTDk0Nila3OqJ_AL-5TPviPnso14A",
-    authDomain: "in-class-38a0b.firebaseapp.com",
-    databaseURL: "https://in-class-38a0b.firebaseio.com",
-    projectId: "in-class-38a0b",
-    storageBucket: "in-class-38a0b.appspot.com",
-    messagingSenderId: "155278234783"
+    apiKey: "AIzaSyC5JhJbodE2o9gJ7Rhql9R4mWpRS_7bEPg",
+    authDomain: "cazzle-e4640.firebaseapp.com",
+    databaseURL: "https://cazzle-e4640.firebaseio.com",
+    projectId: "cazzle-e4640",
+    storageBucket: "cazzle-e4640.appspot.com",
+    messagingSenderId: "284034470468"
   };
   firebase.initializeApp(config);
-
+ 
 var database = firebase.database();
-var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
+// var missGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
 var shipCount1 = 0;
 var shipCount2 =0;
-var hits = 0;
+var hitCount = 0;
 var misses = 0;
 var currentPlayers = "null";
 var currentTurn = "null";
-var player1 = "null";
-var player2 = "null";
+var playerNum = null;
+// var player2 = "null";
 var playerCounter = 0;
 var isPlaying = false;
 // var playerOneExists = "null";
@@ -39,74 +31,69 @@ var playerTwoArray = [];
   
 var playerOneArrayDefault = [
         [
-            {col: 'a', hasShip: false,  hit: ""},
-            {col: 'b', hasShip: false,  hit: ""},
-            {col: 'c', hasShip: false,  hit: ""},
-            {col: 'c', hasShip: false,  hit: ""} 
+            {col: 'a', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""} 
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ],
     ];
 
     var playerTwoArrayDefault = [
-<<<<<<< HEAD
         [
-=======
-		[
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-            {col: 'a', hasShip: false,  hit: "", miss: true},
-            {col: 'b', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true},
-            {col: 'c', hasShip: false,  hit: "", miss: true}, 
+            {col: 'a', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false,  hit: "", miss: false, missGif:""}, 
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
         ],
         [
-            {col: 'a', hasShip: false, hit: "", miss: true},
-            {col: 'b', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true},
-            {col: 'c', hasShip: false, hit: "", miss: true}
+            {col: 'a', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'b', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""},
+            {col: 'c', hasShip: false, hit: "", miss: false, missGif:""}
         ]
     ];
+
 database.ref().set(""); //need a "NewGame" button that will allow anyone to reset the game. 
 // ^^^ this causes firebase to refresh everytime the player refreshes or opens new page. Need to make it so that it renders the updated board.  
 // database.ref().push(playerOneArray);
 // database.ref().push(playerTwoArray);
 
 $(document).on("click", ".joinBtn", function(event){
-<<<<<<< HEAD
     event.preventDefault();
     database.ref().once("value", function(snapshot){
         playerCounter = snapshot.numChildren();
-        console.log(snapshot.numChildren());
-        
-})
+        console.log(snapshot.numChildren());    
+    })
 
 if(playerCounter === 0){
     database.ref("playerOne").set(playerOneArrayDefault);
@@ -123,149 +110,167 @@ if(playerCounter === 1){
     if (sessionStorage.getItem("player") === "playerTwo"){
         $(".joinBtn").hide();
     }   
+            
 }
 
 if (playerCounter === 2) {
     sessionStorage.setItem("player", "");
     alert("Cannot Join")
-=======
-	event.preventDefault();
-	database.ref().once("value", function(snapshot){
-		playerCounter = snapshot.numChildren();
-		console.log(snapshot.numChildren());
-		
-})
-
-if(playerCounter === 0){
-	database.ref("playerOne").set(playerOneArrayDefault);
-	sessionStorage.setItem("player", "playerOne");
-	// When player joins, hides join button to prevent from user using the same machine to hit the join button again. 
-	if (sessionStorage.getItem("player") === "playerOne"){
-		$(".joinBtn").hide();	
-	}
 }
 
-if(playerCounter === 1){
-	database.ref("playerTwo").set(playerTwoArrayDefault);
-	sessionStorage.setItem("player", "playerTwo");
-	if (sessionStorage.getItem("player") === "playerTwo"){
-		$(".joinBtn").hide();
-	}	
-}
 
-if (playerCounter === 2) {
-	sessionStorage.setItem("player", "");
-	alert("Cannot Join")
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
+// if(playerNum === null && isPlaying) {
+//  if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
+//      playerNum = 1;
+//  }
+//  else{
+//      playerNum = 2;
+//  }
+// }
 
-}
 
 })
 
 // database.ref().set({
-<<<<<<< HEAD
 //  playerOne: playerOneArray,
 //  playerTwo: playerTwoArray
-=======
-// 	playerOne: playerOneArray,
-// 	playerTwo: playerTwoArray
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 // })
 
 // When something changes in firebase, capture changes, and render board
 database.ref().on("value", function(newSnap){
-newSnap.val();
 
-<<<<<<< HEAD
-  playerOneArrayDefault = newSnap.val().playerOne;
-  playerTwoArrayDefault = newSnap.val().playerTwo;
-=======
-  playerOneArray = newSnap.val().playerOne;
-  playerTwoArray = newSnap.val().playerTwo;
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
+    //returns the array as empty until both players have joined and both boards have showed up on html otherwise an error message shows up in console.log making playerTwoArray undefined until player2 hits join.
+    playerOneArray = newSnap.val().playerOne || [];
+    playerTwoArray = newSnap.val().playerTwo || [];
 
-// search playerOneArray to see if they placed 2 ships
-var numP1Ships = 0;
-var numP2Ships = 0;
-<<<<<<< HEAD
-for(var i = 0; i < playerOneArray.length; i++) {
-    for(var j = 0; j < playerOneArray[i].length; j++) {
-        if(playerOneArray[i][j].hasShip) {
-            numP1Ships++;
+
+    if(newSnap.val() === ""){
+        return;
+    }
+
+    if(playerNum === null && isPlaying) {
+        if(newSnap.val().playerOne && newSnap.val().playerTwo === undefined){
+            playerNum = 1;
+        }
+        else{
+            playerNum = 2;
         }
     }
-}
-if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
-    isPlaying = true;
-    playGame();
 
+    // search playerOneArray to see if they placed 2 ships
+    var numP1Ships = 0;
+    var numP2Ships = 0;
 
-    
-=======
-for(var i =0; i < playerOneArray.length; i++) {
-	for(var j = 0; j <playerOneArray[i].length; j++) {
-		if(playerOneArray[i][j].hasShip) {
-			numP1Ships++;
-		}
-	}
-}
-if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
-	isPlaying = true;
-	playGame();
+    for(var i =0; i < playerOneArray.length; i++) {
+        for(var j = 0; j < playerOneArray[i].length; j++) {
+            if(playerOneArray[i][j].hasShip) {
+                numP1Ships++;
+            }
+        }
+    }
+    //search playerTwoArray to see if they placed 2 ships
+    for (var i = 0; i < playerTwoArray.length; i++) {
+        for(var j = 0; j < playerTwoArray[i].length; j++) {
+            if(playerTwoArray[i][j].hasShip) {
+                numP2Ships++;
+            }
+        }
+    }
+    //if both players have set ships run the playGame function
+    if (numP1Ships === 2 && numP2Ships === 2 && !isPlaying) {
+        isPlaying
+        playGame(); 
+    }
 
+    if(sessionStorage.getItem("player") === "playerOne") {
+        setPlayerOneBoard();    
+    } else {
+        setPlayerTwoBoard();
+        
+    }
 
-	
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-}
-
-
-renderBoard();
-renderOppBoard();
 })
 
-database.ref('currentPlayer').on("value", function(newSnap){
-console.log(newSnap.val())
-<<<<<<< HEAD
-})  
-=======
-})	
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
+// database.ref('currentPlayer').on("value", function(newSnap){
+//  console.log(newSnap.val())
+// })
+
+//render opponents board - initialize a board with just water gifs. Only show hit's or misses on other side of player's side. 
+function renderOtherBoard(player, playerClass, playerArray){
+
+    var board="<table border=2>";
+
+    // needs to be dynamic what board to use
+    for (var y=0; y<playerArray.length; y++ ) {        // for each row
+        board += "<tr>";
+        for (var x=0; x<playerArray[y].length; x++ ) { // for each clm
+            var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
+            if(playerArray[y][x].hit != "") {
+              waterGif = playerArray[y][x].hit;
+            }
+            if (playerArray[y][x].miss) {
+                waterGif = playerArray[y][x].missGif
+            }
+                board += "<td "+ "class=" + player + 
+                " data-row='"+ y + "'"+
+                " data-col='"+ x + "'>" +
+                   " <img src='" +
+                   waterGif +
+                   "' /></td>";
+        }
+        board += "</tr>";
+    }
+    board += "</table>";
+    $(playerClass).html(board);
+}
 
 // Renders board onto page, each tile with a waterGif image.
-function renderBoard(){
+function setPlayerOneBoard(){
 
-var board="<table border=2>";
+    var board="<table border=2>";
 
-for (var y=0; y<playerOneArray.length; y++ ) {        // for each row
-    board += "<tr>";
-    for (var x=0; x<playerOneArray[y].length; x++ ) { // for each clm
-        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
-        if(playerOneArray[y][x].hasShip) {
-          waterGif = playerOneArray[y][x].hasShip;
+    // needs to be dynamic what board to use
+    for (var y=0; y<playerOneArray.length; y++ ) {        // for each row
+        board += "<tr>";
+        for (var x=0; x<playerOneArray[y].length; x++ ) { // for each clm
+            var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
+            if(playerOneArray[y][x].hasShip) {
+              waterGif = playerOneArray[y][x].hasShip;
+            }
+            if (playerOneArray[y][x].miss) {
+                waterGif = playerOneArray[y][x].missGif
+            }
+                board += "<td "+ "class='p-1'" + 
+                " data-row='"+ y + "'"+
+                " data-col='"+ x + "'>" +
+                   " <img src='" +
+                   waterGif +
+                   "' /></td>";
         }
-            board += "<td "+ "class='p-1'" + 
-            " data-row='"+ y + "'"+
-            " data-col='"+ x + "'>" +
-               " <img src='" +
-               waterGif +
-               "' /></td>";
+        board += "</tr>";
     }
-    board += "</tr>";
+    board += "</table>";
+    $("#player-one-board").html(board);
 }
-board += "</table>";
-$("#player-one-board").html(board);
-}
+//renders playerTwo's board 
+function setPlayerTwoBoard(){
 
-function renderOppBoard(){
+//Error occuring in console.log since playerTwoArray = newSnap.val().playerTwo; was not defined UNTIL player2 joins game. This code removes that error until player2 has joined.
+    if (typeof playerTwoArray === "undefined") {
+        return;
+    }
+
     var board="<table border=2>";
 
 for (var y=0; y<playerTwoArray.length; y++ ) {        // for each row
     board += "<tr>";
     for (var x=0; x<playerTwoArray[y].length; x++ ) { // for each clm
-        var waterGif = 'https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif';
+        var waterGif = 'https://media1.giphy.com/media/ba2MagE3WGZO0/giphy.gif';
         if(playerTwoArray[y][x].hasShip) {
-          waterGif = playerTwoArray
-       [y][x].hasShip;
+          waterGif = playerTwoArray[y][x].hasShip;
+        }
+        if (playerTwoArray[y][x].miss) {
+                waterGif = playerTwoArray[y][x].missGif
         }
             board += "<td "+ "class='p-2'" + 
             " data-row='"+ y + "'"+
@@ -281,11 +286,27 @@ $("#opponent-board").html(board);
 
 }
 
-// function setBoard1 (){
-        
+// function myBoard(){
+//  if(player1){
+//      return playeroneboard
+//  }
+//  else{
+//      return player2board
+//  }
 // }
-// $(document).ready(function() {
-        $('body.newGame').on("click", ".p-1", function(event) {
+
+// function enemyBoard(){
+//  if(i am player one){
+//      return twoplayerboard
+//  }
+//  else{
+//      return playeroneboard
+//  }
+// }
+
+
+//Setting ships on player 1's board
+$('body.newGame').on("click", ".p-1", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
         // On Click, captures the coordinates of the tile clicked.
@@ -305,30 +326,17 @@ $("#opponent-board").html(board);
             }
 
             if (sessionStorage.getItem("player") === "playerOne"){
+                // Changes the value of that specific part of the array
                playerOneArray[row][col].hasShip=ship;
   
                 // sends changes to firebase.
                 database.ref('playerOne').set(playerOneArray);
         
             }
-
-            if (sessionStorage.getItem("player") === "playerOne"){
-			   playerOneArray[row][col].hasShip=ship;
-  
-            	// sends changes to firebase.
-            	database.ref('playerOne').set(playerOneArray);
-		
-			}
-            // Changes the value of that specific part of the array
-         
- 
-
+            
 })
 
-// function setBoard2 (){
-        
-// }
-// $(document).ready(function() {
+//Setting ships on player2's board
         $('body.newGame').on("click", ".p-2", function(event) {
             event.preventDefault();
             $(this).attr("data-ship", "ship");
@@ -342,130 +350,113 @@ $("#opponent-board").html(board);
             shipCount2++;      
 
             if (shipCount2 === 2){
-                // setBoard2();
                               
             }
             else if ( shipCount2 > 2){
                 return;
             }
-<<<<<<< HEAD
             if (sessionStorage.getItem("player") === "playerTwo"){
-            
+             // Changes the value of that specific part of the array
             playerTwoArray[row][col].hasShip=ship;
-=======
- 			if (sessionStorage.getItem("player") === "playerTwo"){
-			
-			playerTwoArray[row][col].hasShip=ship;
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
 
-<<<<<<< HEAD
             }   
-=======
-			}	
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-            // Changes the value of that specific part of the array
-            
-     
+              
 })
 
+
 function playGame() {
-<<<<<<< HEAD
+
+    if (sessionStorage.getItem("player") === "playerOne"){
+        renderOtherBoard("p-2", "#opponent-board", playerTwoArray)
+    } else {
+        renderOtherBoard("p-1", "#player-one-board", playerOneArray)
+    }
+
     $('body').removeClass('newGame');
 
+    //attack if there is a ship on space for player 1
     $(document).on("click", ".p-2",  function(event) {
         event.preventDefault();
-        console.log("attack");
 
         $(this).attr("data-hit", "hit");
 
         var row = $(this).attr("data-row");
-=======
-	$('body').removeClass('newGame');
-
-	$(document).on("click", ".p-2",  function(event) {
-		event.preventDefault();
-		console.log("attack");
-
-		$(this).attr("data-hit", "hit");
-
-		var row = $(this).attr("data-row");
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-        
         var col = $(this).attr("data-col");
-         
         var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
+        var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+        var player1HitCount = 0;
 
         if (sessionStorage.getItem("player") === "playerOne"){
-<<<<<<< HEAD
             
             if(playerTwoArray[row][col].hasShip) {
-
-                playerTwoArray[row][col].hasShip=hit;   
+                playerTwoArray[row][col].hit = hit; 
+                player1HitCount ++;
+                console.log(player1HitCount);
+                if (player1HitCount === 2) {
+                    alert("All enemy ships destroyed. Player1 Win!");
+                    // $(".newGame").add("<button type='button' class='newGame'>New Game</button>");
+                }               
             }
-
-            // sends changes to firebase.
-            database.ref('playerOne').set(playerTwoArray);
-
+            else {
+                 playerTwoArray[row][col].missGif = miss;
+                 playerTwoArray[row][col].miss = true;
             }
-    })
-=======
-			
-			if(playerTwoArray[row][col].hasShip) {
-
-				playerTwoArray[row][col].hasShip=hit;	
-			}
+                
+            // if(hit === 2){
+            //     alert("All enemy ships destroyed. You Win!");
+            // }
 
             // sends changes to firebase.
             database.ref('playerTwo').set(playerTwoArray);
+            
+            renderOtherBoard("p-2", "#opponent-board", playerTwoArray)
 
-			}
-	})
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
+        }
+    })
+
+    //attack if there is a ship on space for player 2
+    $(document).on("click", ".p-1", function(event){
+        event.preventDefault();
+
+        $(this).attr("data-hit", "hit");
+        var row = $(this).attr("data-row");
+        var col = $(this).attr("data-col");
+        var hit = "https://media0.giphy.com/media/BarqgIZ0PdkQg/giphy.gif"; 
+        var miss = "https://media2.giphy.com/media/6trotNE8bTgpW/giphy.gif";
+        var player2HitCount = 0;
+
+        if (sessionStorage.getItem("player") === "playerTwo"){
+
+            if(playerOneArray[row][col].hasShip) {
+
+                playerOneArray[row][col].hit = hit;
+                player2HitCount ++; 
+                console.log(player2HitCount);
+                if (player2HitCount === 2) {
+                    alert("All enemy ships destroyed. Player2 Win!");
+                    // $(".newGame").add("<button type='button' class='newGame'>New Game</button>");
+                }
+            } else {
+                playerOneArray[row][col].missGif = miss;
+                playerOneArray[row][col].miss = true;
+            }
+        
+            // if(hit === 2){
+            //     alert("Enemy ships destroyed. You Win!");
+            // }
+
+            renderOtherBoard("p-1", "#player-one-board", playerOneArray)
+        }
+        database.ref('playerOne').set(playerOneArray);
+
+
+    
+    })
 }
 
-// players have now placed their ships. This function is the game logic and allows for players to switch off and take turns to select squares
-// Need to be able to distinguish which phase the game this is. 
-// if (both players have setShips), then run playGame();
-
-// If page refeshes at any time in the game, should be able to call on firebase and keep playing from wherever game left off. ******
-
-
-
-// Player 1 interacts with Player 2 board. Player 2 interacts with Player 1 board. 
-<<<<<<< HEAD
-$(document).on("click",     )
-=======
-$(document).on("click", 	)
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-
-// If Player 1 selects a square that has a ship, mark as hit - update to html to reflect hit.
-// If Player 1 selects a square that does not have a ship, mark as missed - update on html to reflect miss.
-// After Player 1 has selected a square. Let Player 2 select a square.
-// Be able to track who's turn it is. Store player "turns" in firebase. Every a player selects a square, update firebase each time I update the variable, then render updated board. Need to be notified and moves need to work.  
-// If all ships are selected, alert player 1 wins.
-
-<<<<<<< HEAD
-// Allow reset game via a "newGame" button that will reset firebase changes //database.ref().set(""); 
-=======
-// Allow reset game via a "newGame"	button that will reset firebase changes //database.ref().set(""); 
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-
-// }
-
-// if (shipHits === 2) {
-<<<<<<< HEAD
-//  winGame();
-//  alert("You Win!");
-// }    
-=======
-// 	winGame();
-// 	alert("You Win!");
-// } 	
->>>>>>> 6a03b9d284db802798562986ec12fefd44841b0d
-
-// boat gif https://media.giphy.com/media/rbMT3rRP5vybm/giphy.gif
-// Boat gif image https://media0.giphy.com/media/3oz8xRQiRlaS1XwnPW/giphy.gif
-// waterGif gif https://media3.giphy.com/media/xT0GqcCJJJH12hJvGM/giphy.gif
+// $(".newGame").on("click", function(){
+//     location.reload();
+// })
